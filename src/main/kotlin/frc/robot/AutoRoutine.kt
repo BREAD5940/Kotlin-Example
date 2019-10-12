@@ -34,7 +34,7 @@ abstract class AutoRoutine : SequentialCommandGroup(), Source<Command> {
                     println("[AutoRoutine] Starting routine...")
                 }),
                 routine
-        )
+        ).raceWith(WaitUntilCommand { Robot.emergencyActive })
     }
 
     fun followVisionAssistedTrajectory(
