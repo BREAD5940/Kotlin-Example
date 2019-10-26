@@ -18,13 +18,14 @@ class TurnToAngleCommand : FalconCommand(DriveSubsystem) {
         // put math here
         val error = /* measured minus setpoint */ (DriveSubsystem.gyro() - wantedAngle).radian
 
-        // unit circle gang
-        val isToTheLeft = error > 0
-
-        val leftOutput = if(isToTheLeft) 1.0 else -1.0
+        // output is error times kp
+        val leftOutput = error * kP
 
         DriveSubsystem.tankDrive(leftOutput, -leftOutput)
+    }
 
+    companion object {
+        const val kP = 0.1
     }
 
 }
