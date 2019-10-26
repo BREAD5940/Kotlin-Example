@@ -14,6 +14,11 @@ object DriveSubsystem : FalconSubsystem() {
     val gyro = AHRS(SPI.Port.kMXP).asSource()
     val compressor = Compressor(9)
 
+    fun tankDrive(leftDuty: Double, rightDuty: Double) {
+        leftMotor.setDutyCycle(leftDuty)
+        rightMotor.setDutyCycle(rightDuty)
+    }
+
     val leftMotor: FalconSRX<NativeUnit> = FalconSRX(id = 1, model = DefaultNativeUnitModel).apply { /* this: FalconSRX<NativeUnit> */
         talonSRX.configFactoryDefault()
         outputInverted = false // TODO Replace me with what you found works for the leftMotor

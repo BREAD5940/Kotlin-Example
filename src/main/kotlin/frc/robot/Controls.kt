@@ -1,5 +1,6 @@
 package frc.robot
 
+import frc.robot.subsystems.drive.TurnToAngleCommand
 import org.ghrobotics.lib.wrappers.hid.* // ktlint-disable no-wildcard-imports
 
 object Controls {
@@ -9,7 +10,7 @@ object Controls {
         registerEmergencyMode()
 
         // This command will run while you hold B
-//        button(kB).change(DriveCommand())
+        button(kB).change(TurnToAngleCommand())
     }
 
     fun update() {
