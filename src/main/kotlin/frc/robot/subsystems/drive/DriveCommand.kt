@@ -6,6 +6,9 @@ import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.utils.withDeadband
 import org.ghrobotics.lib.wrappers.hid.getX
 import org.ghrobotics.lib.wrappers.hid.getY
+import kotlin.math.absoluteValue
+import kotlin.math.max
+import kotlin.math.withSign
 
 class DriveCommand : FalconCommand(DriveSubsystem) {
         override fun isFinished() = false
@@ -15,10 +18,10 @@ class DriveCommand : FalconCommand(DriveSubsystem) {
             val forward = -speedSource() // same as -1 * speedSource.invoke()
             val turn = rotationSource()
 
-            var wantedLeftOutput: Double // these will change once we add turning
+            val wantedLeftOutput: Double // these will change once we add turning
             var wantedRightOutput: Double
 
-            val maximum = Math.copySign(Math.max(Math.abs(forward), Math.abs(turn)), forward)
+            val maximum = max(forward.absoluteValue, turn.absoluteValue).withSign(forward)
 
             if (forward >= 0) {
                 if (turn >= 0) {
@@ -44,7 +47,6 @@ class DriveCommand : FalconCommand(DriveSubsystem) {
 
             DriveSubsystem.leftMotor.setDutyCycle(wantedLeftOutput)
             DriveSubsystem.rightMotor.setDutyCycle(wantedRightOutput)
-
 
         }
 
