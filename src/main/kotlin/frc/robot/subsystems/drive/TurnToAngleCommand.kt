@@ -13,19 +13,23 @@ class TurnToAngleCommand : FalconCommand(DriveSubsystem) {
         wantedAngle = DriveSubsystem.gyro() + 90.degree.toRotation2d()
     }
 
+    var prevError = 0.0
+
     override fun execute() {
 
         // put math here
         val error = /* measured minus setpoint */ (DriveSubsystem.gyro() - wantedAngle).radian
 
         // output is error times kp
-        val leftOutput = error * kP
+        val leftOutput = error * kP + kD * (error - prevError)
 
         DriveSubsystem.tankDrive(leftOutput, -leftOutput)
+        prevError = error
     }
 
     companion object {
         const val kP = 0.1
+        const val kD = 0.0
     }
 
 }
